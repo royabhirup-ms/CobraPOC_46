@@ -1,22 +1,52 @@
-name: deploy ASP.Net Core app to an Azure Web App
+name: Build and deploy ASP.Net Core app to an Azure Web App
  
 env:
+
   AZURE_WEBAPP_NAME_DEV: dev-cobra-dotnet-webapp    # set this to the name of your Azure Web App
   AZURE_WEBAPP_NAME_STAGE: stg-cobra-dotnet-webapp    # set this to the name of your Azure Web App
   AZURE_WEBAPP_NAME: cobra-dotnet-webapp    # set this to the name of your Azure Web App
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '8'                 # set this to the .NET Core version to use 
 on:
-  workflow_run:       # For automatic trigger after build
-    workflows: ["Build"]
-    types:
-      - completed
+  push:
+    branches: [ "master" ]
+  workflow_dispatch: 
+permissions:
+  contents: read 
 jobs:
+  build:
+    runs-on: windows-latest 
+    steps:
+      - uses: actions/checkout@v4 
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+ 
+      - name: Set up dependency caching for faster builds
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
+ 
+      - name: dotnet publish
+        run: dotnet publish -c Release -o $env:DOTNET_ROOT/cobraPoc
+ 
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/cobraPoc
+ 
   deploytodev:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     permissions:
-      contents: read
+      contents: none
     runs-on: windows-latest
+    needs: build
     environment:
       name: 'Development'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
@@ -25,8 +55,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: build-artifact
-          run-id: ${{ github.event.workflow_run.id }}
+          name: .net-app
  
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -49,7 +78,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: build-artifact
+          name: .net-app
  
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
