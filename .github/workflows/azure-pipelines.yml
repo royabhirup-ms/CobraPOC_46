@@ -1,8 +1,6 @@
 name: Build and deploy ASP.Net Core app to an Azure Web App
  
 env:
-  AZURE_WEBAPP_NAME_DEV: dev-cobra-dotnet-webapp    # set this to the name of your Azure Web App
-  AZURE_WEBAPP_NAME_STAGE: stg-cobra-dotnet-webapp    # set this to the name of your Azure Web App
   AZURE_WEBAPP_NAME: cobra-dotnet-webapp    # set this to the name of your Azure Web App
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '8'                 # set this to the .NET Core version to use 
@@ -20,7 +18,7 @@ jobs:
       - name: Set up .NET Core
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: $env.DOTNET_VERSION
+          dotnet-version: ${{ env.DOTNET_VERSION }}
  
       - name: Set up dependency caching for faster builds
         uses: actions/cache@v3
@@ -39,7 +37,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: $env.DOTNET_ROOT/cobraPoc
+          path: ${{env.DOTNET_ROOT}}/cobraPoc
  
   deploytodev:
     permissions:
