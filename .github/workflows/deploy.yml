@@ -1,6 +1,8 @@
 name: deploy ASP.Net Core app to an Azure Web App
  
 env:
+  AZURE_WEBAPP_NAME_DEV: dev-cobra-dotnet-webapp    # set this to the name of your Azure Web App
+  AZURE_WEBAPP_NAME_STAGE: stg-cobra-dotnet-webapp    # set this to the name of your Azure Web App
   AZURE_WEBAPP_NAME: cobra-dotnet-webapp    # set this to the name of your Azure Web App
   AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '8'                 # set this to the .NET Core version to use 
@@ -46,7 +48,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: .net-app
+          name: build-artifact
  
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
