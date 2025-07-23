@@ -38,7 +38,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
       - name: Build and Publish solution
-        run: msbuild CobraPOC_46.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishDir="cobraPoc\publish"
+        run: msbuild CobraPOC_46.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishDir="CobraPOC_46\publish"
 
       - name: Confirm publish output
         run: dir CobraPOC_46\publish /s
