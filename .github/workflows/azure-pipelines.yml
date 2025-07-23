@@ -25,10 +25,7 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore CobraPOC_46.sln
 
-    
 
-      - name: List Visual Studio editions
-        run: dir "C:\Program Files\Microsoft Visual Studio\2019"
       - name: List Visual Studio editions
         run: dir "C:\Program Files\Microsoft Visual Studio\2022"
 
