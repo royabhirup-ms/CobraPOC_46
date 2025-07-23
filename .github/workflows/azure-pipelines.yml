@@ -41,7 +41,7 @@ jobs:
         run: msbuild CobraPOC_46.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishDir="cobraPoc\publish"
 
       - name: Confirm publish output
-        run: dir cobraPoc\publish\
+        run: dir publish\
  
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
