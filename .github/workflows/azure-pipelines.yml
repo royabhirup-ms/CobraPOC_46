@@ -16,11 +16,17 @@ jobs:
   build:
     runs-on: windows-latest 
     steps:
-      - uses: actions/checkout@v4 
-      - name: Set up .NET Core
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore CobraPOC_46.sln
+
+      - name: Build solution
+        run: msbuild CobraPOC_46.sln /p:Configuration=Release
  
       - name: Set up dependency caching for faster builds
         uses: actions/cache@v3
