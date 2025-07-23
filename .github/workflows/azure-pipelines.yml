@@ -25,7 +25,7 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore CobraPOC_46.sln
 
-        - name: List MSBuild WebApplications targets folder
+      - name: List MSBuild WebApplications targets folder
         run: dir "C:\Program Files (x86)\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VisualStudio\v17.0\WebApplications"
 
       - name: Build solution
