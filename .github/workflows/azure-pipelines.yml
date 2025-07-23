@@ -47,7 +47,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: cobraPoc\publish\
+          path: obraPoc\CobraPOC_46\obj\Release\Package\CobraPOC_46.zip
 
   deploytodev:
     permissions:
