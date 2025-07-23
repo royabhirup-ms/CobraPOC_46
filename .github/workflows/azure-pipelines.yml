@@ -26,7 +26,7 @@ jobs:
         run: nuget restore CobraPOC_46.sln
 
       - name: Build solution
-        run: msbuild CobraPOC_46.sln /p:Configuration=Release /p:VSToolsPath="C:\Program Files (x86)\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VisualStudio\v17.0"
+        run: msbuild CobraPOC_46.sln /p:Configuration=Release /p:VSToolsPath="C:\Program Files (x86)\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VisualStudio\v17.0"
  
       - name: Set up dependency caching for faster builds
         uses: actions/cache@v3
