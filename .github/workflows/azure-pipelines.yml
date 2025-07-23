@@ -39,8 +39,7 @@ jobs:
             ${{ runner.os }}-nuget-
       - name: Build and Publish .NET Framework 4.6
         run: >
-           "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe"
-           CobraPOC_46\CobraPOC_46.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PackageAsSingleFile=true /p:PublishDir="publish"
+           "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe" CobraPOC_46\CobraPOC_46.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PackageAsSingleFile=true /p:PublishDir="publish"
 
       - name: List all files under workspace
         run: Get-ChildItem -Path . -Recurse
