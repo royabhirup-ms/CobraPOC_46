@@ -38,7 +38,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
       - name: Build and Publish solution
-        run: msbuild cobraPoc\CobraPOC_46\CobraPOC_46.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PackageAsSingleFile=true /p:PublishDir="cobraPoc\publish"
+        run: msbuild D:\a\cobraPoc\CobraPOC_46\CobraPOC_46.csproj /p:Configuration=Release /p:DeployOnBuild=true /p:PackageAsSingleFile=true /p:PublishDir="cobraPoc\publish"
 
       - name: List all files under workspace
         run: Get-ChildItem -Path . -Recurse
