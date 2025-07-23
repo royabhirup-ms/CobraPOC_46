@@ -25,6 +25,16 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore CobraPOC_46.sln
 
+      - name: List Visual Studio editions
+        run: dir "C:\Program Files (x86)\Microsoft Visual Studio\2019"
+
+      - name: List Visual Studio editions
+        run: dir "C:\Program Files (x86)\Microsoft Visual Studio\2019"
+      - name: List Visual Studio editions
+        run: dir "C:\Program Files\Microsoft Visual Studio\2019"
+      - name: List Visual Studio editions
+        run: dir "C:\Program Files\Microsoft Visual Studio\2022"
+
       - name: Build solution
         run: msbuild CobraPOC_46.sln /p:Configuration=Release /p:VSToolsPath="C:\Program Files\Microsoft Visual Studio\2022\Professional\MSBuild\Microsoft\VisualStudio\v17.0"
       - name: Set up dependency caching for faster builds
