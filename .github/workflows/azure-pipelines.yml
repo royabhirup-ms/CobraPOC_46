@@ -38,7 +38,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
       - name: Build and Publish solution
-        run: msbuild CobraPOC_46.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishDir="D:\a\cobraPoc\publish
+        run: msbuild CobraPOC_46.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishDir="D:\a\cobraPoc\publish"
  
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
