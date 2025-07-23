@@ -38,11 +38,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
       - name: Build and Publish solution
-        run: msbuild CobraPOC_46.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishDir="cobraPoc\publish"
+        run: msbuild CobraPOC_46.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PackageAsSingleFile=true /p:PublishDir="cobraPoc\publish"
 
-      - name: Confirm publish output
-        run: dir \
- 
+      - name: List all files under workspace
+        run: Get-ChildItem -Path . -Recurse
+        shell: pwsh
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
