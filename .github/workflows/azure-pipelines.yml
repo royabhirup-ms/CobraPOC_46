@@ -38,13 +38,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
       - name: Build and Publish solution
-        run: msbuild CobraPOC_46.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishDir=${{env.DOTNET_ROOT}}/cobraPoc
+        run: msbuild CobraPOC_46.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishDir="cobraPoc\publish"
+
+      - name: Confirm publish output
+        run: dir cobraPoc\publish /s
  
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/cobraPoc
+          path: cobraPoc\publish\
  
   deploytodev:
     permissions:
