@@ -1,7 +1,6 @@
 name: Build and deploy ASP.Net Core app to an Azure Web App
  
 env:
-
   AZURE_WEBAPP_NAME_DEV: dev-cobra-dotnet-webapp    # set this to the name of your Azure Web App
   AZURE_WEBAPP_NAME_STAGE: stg-cobra-dotnet-webapp    # set this to the name of your Azure Web App
   AZURE_WEBAPP_NAME: cobra-dotnet-webapp    # set this to the name of your Azure Web App
@@ -22,8 +21,6 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-  
-
       - name: Restore NuGet packages
         run: nuget restore CobraPOC_46.sln
 
@@ -34,11 +31,15 @@ jobs:
             /p:Configuration=Release `
             /p:DeployOnBuild=true `
             /p:WebPublishMethod=FileSystem `
-            /p:PublishDir=$env:GITHUB_WORKSPACE\publish\ `
+            /p:PublishDir=publish\ `
             /v:detailed
 
       - name: List publish output
-        run: cmd /c "dir /s /b"
+        run: |
+          echo "Contents of workspace:"
+          dir
+          echo "Contents of publish directory:"
+          dir publish
 
       - name: Upload published artifact
         uses: actions/upload-artifact@v4
