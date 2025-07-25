@@ -23,101 +23,101 @@ jobs:
         uses: microsoft/setup-msbuild@v2
 
       - name: Debug file structure
-        run: dir /a
+        run: dir /a\CobraPOC_46
 
-      - name: Restore NuGet packages
-        run: nuget restore CobraPOC_46.sln
+  #     - name: Restore NuGet packages
+  #       run: nuget restore CobraPOC_46.sln
 
 
-      - name: List Visual Studio editions
-        run: dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VisualStudio\v17.0"
+  #     - name: List Visual Studio editions
+  #       run: dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VisualStudio\v17.0"
 
       
-      - name: Set up dependency caching for faster builds
-        uses: actions/cache@v3
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
+  #     - name: Set up dependency caching for faster builds
+  #       uses: actions/cache@v3
+  #       with:
+  #         path: ~/.nuget/packages
+  #         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+  #         restore-keys: |
+  #           ${{ runner.os }}-nuget-
 
-      - name: Build project
-        run: msbuild CobraPOC_46\CobraPOC_46.csproj /p:Configuration=Release
+  #     - name: Build project
+  #       run: msbuild CobraPOC_46\CobraPOC_46.csproj /p:Configuration=Release
 
-      - name: List contents of bin\Release
-        run: dir bin\Release
+  #     - name: List contents of bin\Release
+  #       run: dir bin\Release
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: .net-app
-          path: CobraPOC_46/bin/Release
+  #     - name: Upload artifact
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: .net-app
+  #         path: CobraPOC_46/bin/Release
 
-  deploytodev:
-    permissions:
-      contents: none
-    runs-on: windows-latest
-    needs: build
-    environment:
-      name: 'Development'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+  # deploytodev:
+  #   permissions:
+  #     contents: none
+  #   runs-on: windows-latest
+  #   needs: build
+  #   environment:
+  #     name: 'Development'
+  #     url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
  
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: .net-app
+  #   steps:
+  #     - name: Download artifact from build job
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: .net-app
  
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME_DEV }}
-          publish-profile: ${{ secrets.devgithubsecretappdeployment }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+  #     - name: Deploy to Azure Web App
+  #       id: deploy-to-webapp
+  #       uses: azure/webapps-deploy@v2
+  #       with:
+  #         app-name: ${{ env.AZURE_WEBAPP_NAME_DEV }}
+  #         publish-profile: ${{ secrets.devgithubsecretappdeployment }}
+  #         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
-  deploytostage:
-     permissions:
-      contents: none
-     runs-on: windows-latest
-     needs: deploytodev
-     environment:
-      name: 'Stage'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+  # deploytostage:
+  #    permissions:
+  #     contents: none
+  #    runs-on: windows-latest
+  #    needs: deploytodev
+  #    environment:
+  #     name: 'Stage'
+  #     url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
  
-     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: .net-app
+  #    steps:
+  #     - name: Download artifact from build job
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: .net-app
  
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME_STAGE }}
-          publish-profile: ${{ secrets.stggithubsecretappdeployment }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+  #     - name: Deploy to Azure Web App
+  #       id: deploy-to-webapp
+  #       uses: azure/webapps-deploy@v2
+  #       with:
+  #         app-name: ${{ env.AZURE_WEBAPP_NAME_STAGE }}
+  #         publish-profile: ${{ secrets.stggithubsecretappdeployment }}
+  #         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
-  deploytoproduction:
-    permissions:
-      contents: none
-    runs-on: windows-latest
-    needs: deploytostage
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+  # deploytoproduction:
+  #   permissions:
+  #     contents: none
+  #   runs-on: windows-latest
+  #   needs: deploytostage
+  #   environment:
+  #     name: 'Production'
+  #     url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
  
-    steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: .net-app
+  #   steps:
+  #     - name: Download artifact from build job
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: .net-app
  
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.githubsecretappdeployment }}
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+  #     - name: Deploy to Azure Web App
+  #       id: deploy-to-webapp
+  #       uses: azure/webapps-deploy@v2
+  #       with:
+  #         app-name: ${{ env.AZURE_WEBAPP_NAME }}
+  #         publish-profile: ${{ secrets.githubsecretappdeployment }}
+  #         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
