@@ -41,7 +41,7 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Build project
-        run: msbuild CobraPOC_46\CobraPOC_46.csproj /p:Configuration=Release
+        run: msbuild CobraPOC_46\CobraPOC_46.csproj /t:Rebuild /p:Configuration=Release
 
       - name: Debug file structure
         run: dir /a\CobraPOC_46\CobraPOC_46\bin
