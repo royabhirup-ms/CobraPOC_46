@@ -38,7 +38,7 @@ jobs:
             /v:detailed
 
       - name: List publish output
-        run: cmd /c "dir publish /s /b"
+        run: cmd /c "dir /s /b"
 
       - name: Upload published artifact
         uses: actions/upload-artifact@v4
