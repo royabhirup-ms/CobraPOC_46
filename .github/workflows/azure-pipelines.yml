@@ -24,30 +24,16 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore CobraPOC_46.sln
 
-      - name: Build project
+      - name: Build and publish project
         run: |
-          msbuild CobraPOC_46\CobraPOC_46.csproj `
-            /p:Configuration=Release `
-            /p:Platform="Any CPU" `
-            /v:detailed
-
-      - name: Create publish directory and copy files
-        run: |
-          New-Item -ItemType Directory -Force -Path "publish"
-          Copy-Item -Path "CobraPOC_46\bin\*" -Destination "publish\" -Recurse -Force
-          Copy-Item -Path "CobraPOC_46\*.aspx" -Destination "publish\" -Force
-          Copy-Item -Path "CobraPOC_46\*.master" -Destination "publish\" -Force
-          Copy-Item -Path "CobraPOC_46\*.config" -Destination "publish\" -Force
-          Copy-Item -Path "CobraPOC_46\App_*" -Destination "publish\" -Recurse -Force -ErrorAction SilentlyContinue
-          Copy-Item -Path "CobraPOC_46\Content" -Destination "publish\" -Recurse -Force -ErrorAction SilentlyContinue
-          Copy-Item -Path "CobraPOC_46\Scripts" -Destination "publish\" -Recurse -Force -ErrorAction SilentlyContinue
-
-      - name: List publish output
-        run: |
-          echo "Contents of workspace:"
-          dir
-          echo "Contents of publish directory:"
-          dir publish -Recurse
+        msbuild CobraPOC_46.sln `
+        /t:Rebuild `
+        /p:Configuration=Release `
+        /p:Platform="Any CPU" `
+        /p:DeployOnBuild=true `
+        /p:WebPublishMethod=FileSystem `
+        /p:PublishDir=publish\ `
+        /v:detailed
 
       - name: Upload published artifact
         uses: actions/upload-artifact@v4
