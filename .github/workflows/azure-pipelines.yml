@@ -32,14 +32,14 @@ jobs:
           /p:Platform="Any CPU" `
           /p:DeployOnBuild=true `
           /p:WebPublishMethod=FileSystem `
-          /p:PublishDir=publish\ `
+          /p:PublishDir=bin\Release\publish\ `
           /v:detailed
 
       - name: Upload published artifact
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: publish
+          path: bin\Release\publish
 
   # deploytodev:
   #   permissions:
