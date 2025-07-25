@@ -30,7 +30,7 @@ jobs:
       - name: Build project
         run: |
           msbuild CobraPOC_46\CobraPOC_46.csproj `
-            /t:Clean;Rebuild `
+            /t:Rebuild `
             /p:Configuration=Release `
             /p:DeployOnBuild=true `
             /p:WebPublishMethod=FileSystem `
