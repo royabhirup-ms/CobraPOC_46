@@ -41,13 +41,17 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Build project
-        run: msbuild CobraPOC_46\CobraPOC_46.csproj /t:Rebuild /p:Configuration=Release
+        run: |
+          msbuild CobraPOC_46\CobraPOC_46\CobraPOC_46.csproj `
+            /t:Rebuild `
+            /p:Configuration=Release `
+            /p:DeployOnBuild=true `
+            /p:WebPublishMethod=FileSystem `
+            /p:PublishDir=publish\ `
+            /v:detailed
 
-      - name: Debug file structure
-        run: dir /a\CobraPOC_46\CobraPOC_46\CobraPOC_46\bin\Release
-
-      - name: List contents of bin\Release
-        run: dir bin\Release
+      - name: List publish output
+        run: dir publish
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
