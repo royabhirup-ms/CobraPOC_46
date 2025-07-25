@@ -26,20 +26,33 @@ jobs:
 
       - name: Build and publish project
         run: |
-          msbuild CobraPOC_46.sln `
-          /t:Rebuild `
+          msbuild CobraPOC_46\CobraPOC_46.csproj `
+          /t:WebPublish `
           /p:Configuration=Release `
-          /p:Platform="Any CPU" `
-          /p:DeployOnBuild=true `
+          /p:Platform=AnyCPU `
           /p:WebPublishMethod=FileSystem `
-          /p:PublishDir=bin\Release\publish\ `
+          /p:PublishUrl=..\publish `
+          /p:DeployDefaultTarget=WebPublish `
           /v:detailed
+
+      - name: List build output
+        run: |
+          echo "Contents of workspace:"
+          dir
+          echo "Checking for publish directory:"
+          if (Test-Path "publish") { 
+            echo "Publish directory found:"
+            dir publish -Recurse 
+          } else { 
+            echo "Publish directory not found, checking project bin:"
+            if (Test-Path "CobraPOC_46\bin") { dir "CobraPOC_46\bin" -Recurse }
+          }
 
       - name: Upload published artifact
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: bin\Release\publish
+          path: publish
 
   # deploytodev:
   #   permissions:
