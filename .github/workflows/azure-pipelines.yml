@@ -23,7 +23,7 @@ jobs:
         uses: microsoft/setup-msbuild@v2
 
       - name: Debug file structure
-        run: dir /s /b
+        run: dir /a
 
       - name: Restore NuGet packages
         run: nuget restore CobraPOC_46.sln
