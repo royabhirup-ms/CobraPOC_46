@@ -27,37 +27,24 @@ jobs:
       - name: Restore NuGet packages
         run: nuget restore CobraPOC_46.sln
 
-
-      - name: List Visual Studio editions
-        run: dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Microsoft\VisualStudio\v17.0"
-
-      
-      - name: Set up dependency caching for faster builds
-        uses: actions/cache@v3
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
-
       - name: Build project
         run: |
           msbuild CobraPOC_46\CobraPOC_46.csproj `
-            /t:Rebuild `
+            /t:Clean;Rebuild `
             /p:Configuration=Release `
             /p:DeployOnBuild=true `
             /p:WebPublishMethod=FileSystem `
-            /p:PublishDir=publish\ `
+            /p:PublishDir=$(System.DefaultWorkingDirectory)\publish\ `
             /v:detailed
 
-      - name: List publish output
-        run: dir publish
+      - name: List publish output recursively
+        run: dir publish /s /b
 
-      - name: Upload artifact
+      - name: Upload published artifact
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: CobraPOC_46/bin/Release
+          path: publish
 
   # deploytodev:
   #   permissions:
